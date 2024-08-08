@@ -275,7 +275,7 @@ df02 |>
        caption = paste("Fuente: INEGI: 
          Indicador Global de la Actividad Económica, base 2018, 
          series desestacionalizadas.<br>
-         Modeladoe y visualización: Juan L. Bretón, PMP | @juanlbreton")) +
+         Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton")) +
   theme_breton() +
   theme(legend.position = "top",
         axis.text.x = element_text(size = rel(0.85)),
