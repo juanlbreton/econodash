@@ -1,0 +1,407 @@
+---
+title: "Economía Mexicana"
+format:
+  dashboard:
+    logo: images/lytica_logo_white_bk.png
+    orientation: columns
+editor: visual
+---
+
+# Histórico
+
+## Column {width="35%"}
+
+```{r}
+#| label: librerias
+#| warning: false
+#| message: false
+
+# librerias
+library(tidyverse)
+library(styleBreton)
+library(gt)
+```
+
+```{r}
+#| label: carga de datos
+#| warning: false
+#| message: false
+#| echo: false
+#| include: false
+
+# importa datos
+suppressMessages(source("source/data_clean_b18_00.R"))
+```
+
+```{r}
+#| label: implementacion de secuencia
+
+## preparación de secuencia
+secuen <- function(base){
+  seq_along(along.with = base$valor)
+}
+
+# implementación de secuencia
+df02 <- 
+  df01 |> 
+  mutate(id_mes = str_c(mes, 
+                        str_extract(year(fecha_final), "\\d{2}$"), 
+                        sep = "_")) |> 
+  nest(.by = concepto) |> 
+  mutate(sec = map(data, secuen)) |> 
+  unnest(cols = everything())
+```
+
+```{r}
+#| label: último mes de la serie
+
+# extracción de último mes de la serie
+ulti_fecha <- 
+  df02 |> 
+  filter(concepto == "Indicador Global de la Actividad Económica" & 
+           fecha_final == max(fecha_final)) |> 
+  pull(fecha_final)
+```
+
+::: {.card title="Variación Anual del IGAE"}
+```{r}
+#| label: variacion 12 meses global
+
+## cálculo de tasas de cambio GLOBAL
+año_anterior <- df01 %>% 
+  filter(concepto == "Indicador Global de la Actividad Económica") %>% 
+  filter(fecha == max(fecha) - years(1)) %>% 
+  pull(valor)
+
+año_actual <- df01 %>% 
+  filter(concepto == "Indicador Global de la Actividad Económica") %>% 
+  filter(fecha == max(fecha)) %>% 
+  pull(valor)
+
+# value box
+bslib::value_box(
+  paste("Variación respecto al mes de", 
+        format(ulti_fecha - years(1), "%B %Y")),
+  theme = "primary",
+  value = scales::percent((año_actual - año_anterior) / año_anterior,
+                          accuracy = 0.01)
+)
+```
+:::
+
+::: {.card title="Variación Mensual del IGAE"}
+```{r}
+#| label: variacion mes anterior global
+
+# cambio a 1 mes
+mes_anterior <- df01 %>% 
+  filter(concepto == "Indicador Global de la Actividad Económica") %>% 
+  filter(fecha == max(fecha) - months(1)) %>% 
+  pull(valor)
+
+mes_actual <- df01 %>% 
+  filter(concepto == "Indicador Global de la Actividad Económica") %>% 
+  filter(fecha == max(fecha)) %>% 
+  pull(valor)
+
+# value box
+bslib::value_box(
+  paste("Variación respecto al mes de", 
+        format(ulti_fecha - month(2), "%B %Y")),
+  theme = "primary",
+  value = scales::percent((mes_actual - mes_anterior) / mes_anterior,
+                          accuracy = 0.01)
+)
+```
+:::
+
+```{r}
+#| label: variacion de los componentes
+
+## cálculo de tasas de cambio PRIMARIAS
+# cambio a 1 año
+prim_año_ant <- df01 %>% 
+  filter(concepto == "Actividades primarias") %>% 
+  filter(fecha == max(fecha) - years(1)) %>% 
+  pull(valor)
+
+prim_año_act <- df01 %>% 
+  filter(concepto == "Actividades primarias") %>% 
+  filter(fecha == max(fecha)) %>% 
+  pull(valor)
+
+# cambio a 1 mes
+prim_mes_ant <- df01 %>% 
+  filter(concepto == "Actividades primarias") %>% 
+  filter(fecha == max(fecha) - months(1)) %>% 
+  pull(valor)
+
+prim_mes_act <- df01 %>% 
+  filter(concepto == "Actividades primarias") %>% 
+  filter(fecha == max(fecha)) %>% 
+  pull(valor)
+
+
+## cálculo de tasas de cambio SECUNDARIAS
+# cambio a 1 año
+secu_año_ant <- df01 %>% 
+  filter(concepto == "Actividades secundarias") %>% 
+  filter(fecha == max(fecha) - years(1)) %>% 
+  pull(valor)
+
+secu_año_act <- df01 %>% 
+  filter(concepto == "Actividades secundarias") %>% 
+  filter(fecha == max(fecha)) %>% 
+  pull(valor)
+
+
+# cambio a 1 mes
+secu_mes_ant <- df01 %>% 
+  filter(concepto == "Actividades secundarias") %>% 
+  filter(fecha == max(fecha) - months(1)) %>% 
+  pull(valor)
+
+secu_mes_act <- df01 %>% 
+  filter(concepto == "Actividades secundarias") %>% 
+  filter(fecha == max(fecha)) %>% 
+  pull(valor)
+
+
+## cálculo de tasas de cambio TERCIARIAS
+# cambio a 1 año
+terc_año_ant <- df01 %>% 
+  filter(concepto == "Actividades terciarias") %>% 
+  filter(fecha == max(fecha) - years(1)) %>% 
+  pull(valor)
+
+terc_año_act <- df01 %>% 
+  filter(concepto == "Actividades terciarias") %>% 
+  filter(fecha == max(fecha)) %>% 
+  pull(valor)
+
+
+# cambio a 1 mes
+terc_mes_ant <- df01 %>% 
+  filter(concepto == "Actividades terciarias") %>% 
+  filter(fecha == max(fecha) - months(1)) %>% 
+  pull(valor)
+
+terc_mes_act <- df01 %>% 
+  filter(concepto == "Actividades terciarias") %>% 
+  filter(fecha == max(fecha)) %>% 
+  pull(valor)
+
+
+# tabla
+tbl_varia <- 
+  tibble(
+  indicador = c("Primarias", "Secundarias", "Terciarias"),
+  año_ant = c((prim_año_act - prim_año_ant) / prim_año_ant,
+              (secu_año_act - secu_año_ant) / secu_año_ant,
+              (terc_año_act - terc_año_ant) / terc_año_ant),
+  mes_ant = c((prim_mes_act - prim_mes_ant) / prim_mes_ant,
+              (secu_mes_act - secu_mes_ant) / secu_mes_ant,
+              (terc_mes_act - terc_mes_ant) / terc_mes_ant)
+)
+
+# tbl_varia |> 
+#   gt() |> 
+#   tab_header(title = "Variación Periódica de Componentes del IGAE") |> 
+#   fmt_percent(columns = c(año_ant, mes_ant), decimals = 4) |> 
+#   cols_label(indicador ~ "Componente",
+#              año_ant ~ "12 meses anteriores",
+#              mes_ant ~ "Mes anterior") |> 
+#   opt_align_table_header(align = "left") |> 
+#   tab_spanner(columns = c(año_ant, mes_ant), 
+#               label = "Periodo")
+```
+
+## Column {width="65%"}
+
+::: {.card title="Desempeño Histórico del Indicador Global de la Actividad Económica"}
+```{r}
+#| label: visualización de las 4 series
+#| warning: false
+#| message: false
+
+
+# texto para caption
+text_cap <-  
+  paste0("hasta ", 
+        format(ulti_fecha, "%b %Y"),
+        ".")
+
+# visualización de 4 series
+df02 |> 
+  ggplot() +
+  geom_line(data = df02 |> 
+              filter(concepto == "Actividades primarias"),
+            aes(x = fecha_final, 
+                y = valor, 
+                group = concepto,
+                color = "Act. Primarias"),
+            alpha = 0.35) +
+  geom_line(data = df02 |> 
+              filter(concepto == "Actividades secundarias"),
+            aes(x = fecha_final, 
+                y = valor, 
+                group = concepto,
+                color = "Act. Secundarias"),
+            alpha = 0.35) +
+  geom_line(data = df02 |> 
+              filter(concepto == "Actividades terciarias"),
+            aes(x = fecha_final, 
+                y = valor, 
+                group = concepto,
+                color = "Act. Terciarias"),
+            alpha = 0.35) +
+  geom_line(data = df02 |> 
+              filter(concepto == "Indicador Global de la Actividad Económica"),
+            aes(x = fecha_final, 
+                y = valor, 
+                group = concepto,
+                color = "Global"),
+            alpha = 0.85,
+            linewidth = 0.85) +
+  scale_color_manual(name = "Indicador",
+                     breaks = c("Global", "Act. Primarias",
+                                "Act. Secundarias", "Act. Terciarias"),
+                     values = c("#B22203", "#06B304", 
+                                "#00238D", "#9003C2")) +
+  labs(title = "Desemepeño Histórico de las Series del IGAE",
+       subtitle = paste("Indicadores de actividad económica Global, Primaria, Secundaria y Terciaria", text_cap),
+       y = "Índice a valores constantes (base 2018)",
+       x = "Mes",
+       caption = paste("Fuente: INEGI: 
+         Indicador Global de la Actividad Económica, base 2018, 
+         series desestacionalizadas.<br>
+         Modeladoe y visualización: Juan L. Bretón, PMP | @juanlbreton")) +
+  theme_breton() +
+  theme(legend.position = "top",
+        axis.text.x = element_text(size = rel(0.85)),
+        panel.grid.major = element_line(color = "grey97"),
+        panel.grid.minor = element_blank()) +
+  scale_x_date(breaks = seq(min(df02$fecha_final),
+                            max(df02$fecha_final),
+                            length.out = 10),
+               date_labels = "%Y_%m")
+```
+:::
+
+# Comparado
+
+## Column {width="35%"}
+
+```{r}
+#| label: preparación
+
+# función para poner numero de índice
+pon_num <- function(base) {
+  seq_along(along.with = base$num_mes)
+}
+
+# función para calcular valor escalado
+calc_escala <- function(base) {
+  fac <- base %>% 
+    slice_min(order_by = fecha_final) %>% 
+    pull(valor)
+  
+  (base$valor - fac) / fac
+}
+
+# extracción de último mes de la serie
+ultim_fecha <- 
+  df01 |> 
+  filter(concepto == "Indicador Global de la Actividad Económica" & 
+           fecha_final == max(fecha_final)) |> 
+  pull(fecha_final)
+
+text_fecha <-  
+  paste0("hasta ", 
+         format(ultim_fecha, "%b %Y"),
+         ".")
+
+# integrar presidente con base en fecha
+df_global_01 <- df01 %>% 
+  filter(concepto == "Indicador Global de la Actividad Económica") %>%
+  mutate(presidente = as_factor(case_when(
+    fecha_final >= as_date("1994-12-01") & fecha_final < as_date("2000-12-01") ~ "Zedillo",
+    fecha_final >= as_date("2000-12-01") & fecha_final < as_date("2006-12-01") ~ "Fox",
+    fecha_final >= as_date("2006-12-01") & fecha_final < as_date("2012-12-01") ~ "Calderón",
+    fecha_final >= as_date("2012-12-01") & fecha_final < as_date("2018-12-01") ~ "Peña",
+    fecha_final >= as_date("2018-12-01") ~ "López",
+    TRUE ~ "Salinas"
+  ))) %>%
+  filter(presidente != "Salinas") %>%
+  nest(data = -presidente)
+
+# incorpora escala y mes de sexenio
+df_global_02 <- df_global_01 %>% 
+  mutate(mes_sexenio = map(data, pon_num),
+         escalado = map(data, calc_escala)) %>% 
+  unnest(everything())
+```
+
+::: {.card title="Crecimiento Acumulado del Último Sexenio"}
+```{r}
+#| label: crecimiento acumulado sexenio
+
+# crecimiento de inicio a fin de sexenio 
+inicio_lopez <- 
+  df_global_02 |> 
+  filter(presidente == "López") |> 
+  head(n = 1) |> 
+  pull(valor)
+
+
+ultimo_lopez <- 
+  df_global_02 |> 
+  filter(presidente == "López") |> 
+  tail(n = 1) |> 
+  pull(valor)
+
+bslib::value_box(
+  paste("Crecimiento Acumulado del Sexenio hasta",
+        format(ultim_fecha, "%b %Y")),
+  theme = "primary",
+  value = scales::percent((ultimo_lopez - inicio_lopez) / inicio_lopez,
+                          accuracy = 0.01)
+)
+```
+:::
+
+## Column {width="65%"}
+
+::: {.card title="Comparación del Desempeño del IGAE por Sexenio"}
+```{r}
+#| label: visualización escalada de los sexenios
+
+# visualización escalada
+df_global_02 %>%
+  drop_na(valor) %>% 
+  mutate(last_val = ifelse(mes_sexenio == max(mes_sexenio), 
+                           as.character(presidente), 
+                           NA)) %>%
+  ggplot(aes(x = mes_sexenio,
+             y = escalado,
+             color = presidente)) +
+  geom_line(alpha = 0.65) +
+  scale_color_manual(name = "Presidente",
+                     values = c("#34495E", "#F39C12", "#16A085", 
+                                "#8E44AD", "#9F0D08")) +
+  theme_breton() +
+  theme(legend.position = "top") +
+  labs(title = "Indicador Anticipado del Desempeño de la Economía en cada Periodo Presidencial",
+       subtitle = paste("Índice escalado hasta", text_fecha),
+       x = "Meses del Sexenio",
+       y = "Índice: 0 = Primer mes de cada sexenio",
+       caption = "Fuente: INEGI, 
+         Indicador Global de la Actividad Económica, 
+         series desestacionalizadas. Valores constantes, base 2018.<br>
+         Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton" ) +
+  scale_x_continuous(breaks = round(seq(min(df_global_02$mes_sexenio),
+                                        max(df_global_02$mes_sexenio),
+                                        length.out = 10),
+                                    digits = 0))
+```
+:::

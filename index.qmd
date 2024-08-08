@@ -1,0 +1,11 @@
+---
+title: "Desempeño de la Economía Mexicana"
+author: "Juan L. Bretón, PMP"
+---
+
+
+
+## Indicador Anticipado de Desempeño de la Economía Mexicana
+
+[Indicador Global de la Actividad Económica](igae_dd.qmd)
+

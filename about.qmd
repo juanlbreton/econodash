@@ -1,0 +1,8 @@
+---
+title: "Juan L. Bretón, PMP"
+about:
+  template: jolla
+  image: images/icon_jlb.jpg
+---
+
+Data science practitioner.
