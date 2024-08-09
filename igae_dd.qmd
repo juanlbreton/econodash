@@ -288,7 +288,7 @@ df02 |>
         plot.title.position = "plot",
         plot.caption = element_markdown(color = "darkgrey",
                                         hjust = 0),
-          plot.caption.position = "plot") +
+        plot.caption.position = "plot") +
   scale_x_date(breaks = seq(min(df02$fecha_final),
                             max(df02$fecha_final),
                             length.out = 10),
