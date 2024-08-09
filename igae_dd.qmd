@@ -276,7 +276,7 @@ df02 |>
          Indicador Global de la Actividad Económica, base 2018, 
          series desestacionalizadas.<br>
          Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton")) +
-  theme_breton() +
+  # theme_breton() +
   theme(legend.position = "top",
         axis.text.x = element_text(size = rel(0.85)),
         panel.grid.major = element_line(color = "grey97"),
@@ -389,7 +389,7 @@ df_global_02 %>%
   scale_color_manual(name = "Presidente",
                      values = c("#34495E", "#F39C12", "#16A085", 
                                 "#8E44AD", "#9F0D08")) +
-  theme_breton() +
+  # theme_breton() +
   theme(legend.position = "top") +
   labs(title = "Indicador Anticipado del Desempeño de la Economía en cada Periodo Presidencial",
        subtitle = paste("Índice escalado hasta", text_fecha),
