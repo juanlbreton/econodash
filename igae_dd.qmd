@@ -20,6 +20,7 @@ editor: visual
 library(tidyverse)
 library(styleBreton)
 library(gt)
+library(ggtext)
 ```
 
 ```{r}
@@ -280,7 +281,12 @@ df02 |>
   theme(legend.position = "top",
         axis.text.x = element_text(size = rel(0.85)),
         panel.grid.major = element_line(color = "grey97"),
-        panel.grid.minor = element_blank()) +
+        panel.grid.minor = element_blank(),
+        text = element_text(family = "Open Sans Condensed"),
+        plot.title.position = "plot",
+        plot.caption = element_markdown(color = "darkgrey",
+                                        hjust = 0),
+          plot.caption.position = "plot") +
   scale_x_date(breaks = seq(min(df02$fecha_final),
                             max(df02$fecha_final),
                             length.out = 10),
@@ -390,7 +396,12 @@ df_global_02 %>%
                      values = c("#34495E", "#F39C12", "#16A085", 
                                 "#8E44AD", "#9F0D08")) +
   # theme_breton() +
-  theme(legend.position = "top") +
+  theme(legend.position = "top",
+        text = element_text(family = "Open Sans Condensed"),
+        plot.title.position = "plot",
+        plot.caption = element_markdown(color = "darkgrey",
+                                        hjust = 0),
+        plot.caption.position = "plot") +
   labs(title = "Indicador Anticipado del Desempeño de la Economía en cada Periodo Presidencial",
        subtitle = paste("Índice escalado hasta", text_fecha),
        x = "Meses del Sexenio",
