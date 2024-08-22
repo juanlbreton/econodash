@@ -5,6 +5,8 @@ format:
     logo: images/lytica_logo_white_bk.png
     orientation: columns
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Histórico
@@ -81,7 +83,7 @@ año_actual <- df01 %>%
 
 # value box
 bslib::value_box(
-  paste("Variación respecto al mes de", 
+  paste("Variación respecto a", 
         format(ulti_fecha - years(1), "%B %Y")),
   theme = "primary",
   value = scales::percent((año_actual - año_anterior) / año_anterior,
@@ -107,8 +109,8 @@ mes_actual <- df01 %>%
 
 # value box
 bslib::value_box(
-  paste("Variación respecto al mes de", 
-        format(ulti_fecha - month(2), "%B %Y")),
+  paste("Variación respecto a", 
+        format(ulti_fecha - months(1), "%B %Y")),
   theme = "primary",
   value = scales::percent((mes_actual - mes_anterior) / mes_anterior,
                           accuracy = 0.01)
