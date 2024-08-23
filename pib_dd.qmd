@@ -200,7 +200,6 @@ df_pib |>
                                   by = 6))
 ```
 
-
 :::
 
 # Comparado
@@ -212,12 +211,215 @@ df_pib |>
 ## Column {width="65%"}
 
 
+```{r}
+#| label: preparación comparado pib
+
+
+## Escalamiento de la serie por sexenio
+# Función de escalamiento a 0
+escalar_serie <- function(df){
+  fact <- df |> 
+    slice_min(order_by = fecha_final) |> 
+    pull(valor)
+  
+  (df$valor - fact) / (fact)
+}
+
+
+# Función para numerar trimestre
+numerar_trimes <- function(df){
+  seq_along(along.with = df$trimestre)
+}
+
+
+# integra presidente
+df_pib_escala <- 
+  df_pib |> 
+  mutate(presidente = as_factor(case_when(
+    fecha_final >= as_date("1994-12-01") & fecha_final < as_date("2000-12-01") ~ "Zedillo",
+    fecha_final >= as_date("2000-12-01") & fecha_final < as_date("2006-12-01") ~ "Fox",
+    fecha_final >= as_date("2006-12-01") & fecha_final < as_date("2012-12-01") ~ "Calderón",
+    fecha_final >= as_date("2012-12-01") & fecha_final < as_date("2018-12-01") ~ "Peña",
+    fecha_final >= as_date("2018-12-01") ~ "López",
+    TRUE ~ "Salinas"
+  ))) |> 
+  filter(presidente != "Salinas") |> 
+  nest(.by = presidente) |> 
+  mutate(valor_escalado = map(data, escalar_serie),
+         num_trimestre = map(data, numerar_trimes))  |> 
+  unnest(everything()) |> 
+  select(-c(denominacion, fecha_inicio)) |> 
+  mutate(num_trimestre = num_trimestre - 1)
+
+```
+
+::: {.card title="Comparación del Producto Interno Bruto por Sexenio"}
+
+```{r}
+#| label: visualización comparado pib
+
+# Visualización escalada
+df_pib_escala |> 
+  ggplot(aes(x = num_trimestre, 
+             y = valor_escalado, 
+             color = presidente)) +
+  geom_line(alpha = 0.75) +
+  geom_hline(yintercept = 00,
+             color = "darkgrey",
+             alpha = 0.5) +
+  labs(title = "Desempeño de la Economía Mexicana en cada Periodo Presidencial",
+       subtitle = paste0("Producto Interno Bruto escalado hasta trimestre", 
+                         ult_tm, " de", ult_anio),
+       x = "Trimestre",
+       y = "Índice 0 = Inicio de cada sexenio",
+       caption = "Fuente: INEGI, 
+           Producto interno bruto trimestral. Precios de 2018. 
+           Series desestacionalizadas.<br>
+           Modelaje y visualización: Juan L. Bretón, PMP | @juanlbreton" ) +
+  theme(legend.position = "top",
+        axis.text.x = element_text(size = rel(0.85)),
+        panel.grid.major = element_line(color = "grey97"),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "#FFFFFF"),
+        axis.line = element_line(color = "darkgrey"),
+        text = element_text(family = "Open Sans Condensed"),
+        plot.title.position = "plot",
+        plot.caption = element_markdown(color = "darkgrey",
+                                        hjust = 0),
+        plot.caption.position = "plot") +
+  scale_color_manual(name = "Presidente",
+                     values = c("#34495E", "#F39C12", "#16A085", 
+                                "#8E44AD", "#C0392B")) +
+  scale_x_continuous(breaks = seq(min(df_pib_escala$num_trimestre),
+                                  max(df_pib_escala$num_trimestre)))
+```
+
+
+:::
 
 # Tasa Anual Promedio
 
 
 ## Column {width="35%"}
 
+::: {.card title="Tasa de Crecimiento Anual Promedio Anterior"}
 
+
+```{r}
+#| label: tasa crecimiento desde inicio pib
+
+
+# Tasa de crecimiento desde el inicio del sexenio
+calcula_sexenio <- function(df){
+  val_inic <- df |> 
+    slice_min(order_by = num_trimestre) |> 
+    pull(valor)
+  
+  val_fina <- df |> 
+    slice_max(order_by = num_trimestre) |> 
+    pull(valor)
+  
+  (val_fina - val_inic) / val_inic
+  
+}
+
+
+```
+
+
+
+```{r}
+#| label: tasa crecimiento anual sin lopez pib
+
+# implementa tasa sexenal
+df_tasa_sexenal <- 
+  df_pib_escala |> 
+  nest(.by = presidente) |> 
+  mutate(tasa_sexenal = map(data, calcula_sexenio),
+         periodos = map(data, nrow)) |> 
+  unnest(c(tasa_sexenal, periodos)) |> 
+  select(-data) |> 
+  mutate(tasa_promedio = tasa_sexenal / (periodos / 4))
+
+
+# calculo
+tasa_media_sl <- 
+  df_tasa_sexenal |> 
+  filter(presidente != "López") |> 
+  summarize(media_medias = mean(tasa_promedio)) |> 
+  pull(media_medias)
+
+
+# value box
+bslib::value_box(
+  paste("Tasa de crecimiento anual promedio de 1994 a 2018"),
+  theme = "primary",
+  value = scales::percent(tasa_media_sl,
+                          accuracy = 0.01)
+)
+```
+
+
+:::
 
 ## Column {width="65%"}
+
+
+::: {.card title="Tasa de Crecimiento Anual Promedio por Sexenio"}
+
+```{r}
+#| label: visualización tasa crecimiento pib
+
+# visualización
+df_tasa_sexenal |> 
+  ggplot(aes(x = presidente, y = tasa_promedio, color = presidente)) +
+  geom_point(size = 4.5, 
+             alpha = 0.75) +
+  geom_segment(aes(x = presidente, xend = presidente, 
+                   y = 0, yend = tasa_promedio),
+               alpha = 0.4,
+               linewidth = 4.5) +
+  geom_text(aes(label = scales::percent(tasa_promedio, accuracy = 0.01)),
+            family = "Encode Sans Condensed",
+            size = 3.25,
+            vjust = -0.50,
+            hjust = -0.25,
+            color = "grey10") +
+  geom_hline(yintercept = mean(df_tasa_sexenal$tasa_promedio),
+             color = "grey60", linewidth = 4.5, alpha = 0.25) +
+  annotate(geom = "text",
+           x = 0.65, 
+           y = mean(df_tasa_sexenal$tasa_promedio),
+           label = scales::percent(mean(df_tasa_sexenal$tasa_promedio),
+                                   accuracy = 0.01),
+           size = 3.25,
+           color = "grey45") +
+  labs(title = "Tasa Anual Promedio de Crecimiento de la Economía Mexicana",
+       subtitle = "Durante el sexenio de cada uno de los últimos 5 Presidentes.",
+       x = NULL,
+       y = "Tasa anual promedio",
+       caption = "Fuente: INEGI, 
+           Producto interno bruto trimestral. Precios de 2018. 
+           Series desestacionalizadas.<br>
+           Modelaje y visualización: Juan L. Bretón, PMP | @juanlbreton" ) +
+  scale_color_manual(values = c("#34495E", "#F39C12", "#16A085", 
+                                "#8E44AD", "#C0392B")) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = rel(0.85)),
+        panel.grid.major = element_line(color = "grey97"),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "#FFFFFF"),
+        axis.line = element_line(color = "darkgrey"),
+        text = element_text(family = "Open Sans Condensed"),
+        plot.title.position = "plot",
+        plot.caption = element_markdown(color = "darkgrey",
+                                        hjust = 0),
+        plot.caption.position = "plot") +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 0.1))
+
+```
+
+
+:::
+
+
