@@ -138,7 +138,7 @@ text_cap <-
   paste("hasta el trimestre", 
          ult_tm, "de", ult_anio)
 
-# gráfica
+# gráfica de tendencia histórica
 df_pib |> 
   mutate(predic = predict(tendencia, newdata = df_pib)) |>
   ggplot(aes(x = trimestre, 
@@ -163,8 +163,21 @@ df_pib |>
            color = "grey30",
            size = 3.0,
            angle = 90) +
+  geom_vline(xintercept = df_pib |> 
+               filter(trimestre == 2024.2) |>
+               pull(trimestre),
+            color = "grey30",
+            alpha = 0.5) +
+  annotate(geom = "text",
+           label = "Elección de Claudia Sheinbaum",
+           x = 2024.2 - 0.5, 
+           y = 19050000,
+           family = "Encode Sans Condensed",
+           color = "grey30",
+           size = 3.0,
+           angle = 90) +
   labs(title = "Desempeño y Tendencia Históricos de la Economía Mexicana",
-       subtitle = "La línea roja refleja la tendencia histórica hasta la última elección presidencial.",
+       subtitle = "La línea roja refleja la tendencia histórica hasta la elección presidencial de 2018.",
        x = "Año.Trimestre",
        y = "PIB (Miles de millones de pesos)",
        caption = "Fuente: INEGI, 
