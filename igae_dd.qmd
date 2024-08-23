@@ -1,5 +1,5 @@
 ---
-title: "IGAE"
+title: "Índice Global de la Actividad Económica"
 format:
   dashboard:
     logo: images/lytica_logo_white_bk.png

@@ -1,5 +1,5 @@
 ---
-title: "PIB Trimestral"
+title: "Producto Interno Bruto Trimestral"
 format:
   dashboard:
     logo: images/lytica_logo_white_bk.png
@@ -25,7 +25,6 @@ library(gt)
 library(ggtext)
 ```
 
-
 ```{r}
 #| label: carga de datos pib
 #| warning: false
@@ -37,7 +36,6 @@ library(ggtext)
 suppressWarnings(source("source/data_2018.R", 
                         echo = FALSE))
 ```
-
 
 ```{r}
 #| label: tendencia lineal pib
@@ -96,15 +94,13 @@ val_anio_ant <-
 # value box
 bslib::value_box(
   paste("Variación respecto al trimestre", 
-        ult_tm, "de", ult_anio),
+        ult_tm, "de", as.numeric(ult_anio) - 1),
   theme = "primary",
   value = scales::percent((val_actual - val_anio_ant) / val_anio_ant,
                           accuracy = 0.01)
 )
 ```
-
 :::
-
 
 ::: {.card title="Variación Trimestral del PIB"}
 ```{r}
@@ -126,14 +122,11 @@ bslib::value_box(
                           accuracy = 0.01)
 )
 ```
-
 :::
-
 
 ## Column {width="65%"}
 
 ::: {.card title="Tendencia Histórica del Producto Interno Bruto"}
-
 ```{r}
 #| label: visualización de la serie pib
 #| warning: false
@@ -199,17 +192,13 @@ df_pib |>
                                   max(df_pib$trimestre),
                                   by = 6))
 ```
-
 :::
 
 # Comparado
 
 ## Column {width="35%"}
 
-
-
 ## Column {width="65%"}
-
 
 ```{r}
 #| label: preparación comparado pib
@@ -254,7 +243,6 @@ df_pib_escala <-
 ```
 
 ::: {.card title="Comparación del Producto Interno Bruto por Sexenio"}
-
 ```{r}
 #| label: visualización comparado pib
 
@@ -293,18 +281,13 @@ df_pib_escala |>
   scale_x_continuous(breaks = seq(min(df_pib_escala$num_trimestre),
                                   max(df_pib_escala$num_trimestre)))
 ```
-
-
 :::
 
 # Tasa Anual Promedio
 
-
 ## Column {width="35%"}
 
 ::: {.card title="Tasa de Crecimiento Anual Promedio Anterior"}
-
-
 ```{r}
 #| label: tasa crecimiento desde inicio pib
 
@@ -325,8 +308,6 @@ calcula_sexenio <- function(df){
 
 
 ```
-
-
 
 ```{r}
 #| label: tasa crecimiento anual sin lopez pib
@@ -358,15 +339,11 @@ bslib::value_box(
                           accuracy = 0.01)
 )
 ```
-
-
 :::
 
 ## Column {width="65%"}
 
-
 ::: {.card title="Tasa de Crecimiento Anual Promedio por Sexenio"}
-
 ```{r}
 #| label: visualización tasa crecimiento pib
 
@@ -418,8 +395,4 @@ df_tasa_sexenal |>
   scale_y_continuous(labels = scales::percent_format(accuracy = 0.1))
 
 ```
-
-
 :::
-
-
