@@ -1,5 +1,5 @@
 ---
-title: "Economía Mexicana"
+title: "IGAE"
 format:
   dashboard:
     logo: images/lytica_logo_white_bk.png
@@ -14,7 +14,7 @@ editor_options:
 ## Column {width="35%"}
 
 ```{r}
-#| label: librerias
+#| label: librerias igae
 #| warning: false
 #| message: false
 
@@ -26,7 +26,7 @@ library(ggtext)
 ```
 
 ```{r}
-#| label: carga de datos
+#| label: carga de datos igae
 #| warning: false
 #| message: false
 #| echo: false
@@ -37,7 +37,7 @@ suppressMessages(source("source/data_clean_b18_00.R"))
 ```
 
 ```{r}
-#| label: implementacion de secuencia
+#| label: implementacion de secuencia igae
 
 ## preparación de secuencia
 secuen <- function(base){
@@ -56,7 +56,7 @@ df02 <-
 ```
 
 ```{r}
-#| label: último mes de la serie
+#| label: último mes de la serie igae
 
 # extracción de último mes de la serie
 ulti_fecha <- 
@@ -68,7 +68,7 @@ ulti_fecha <-
 
 ::: {.card title="Variación Anual del IGAE"}
 ```{r}
-#| label: variacion 12 meses global
+#| label: variacion 12 meses global igae
 
 ## cálculo de tasas de cambio GLOBAL
 año_anterior <- df01 %>% 
@@ -94,7 +94,7 @@ bslib::value_box(
 
 ::: {.card title="Variación Mensual del IGAE"}
 ```{r}
-#| label: variacion mes anterior global
+#| label: variacion mes anterior global igae
 
 # cambio a 1 mes
 mes_anterior <- df01 %>% 
@@ -119,7 +119,7 @@ bslib::value_box(
 :::
 
 ```{r}
-#| label: variacion de los componentes
+#| label: variacion de los componentes igae
 
 ## cálculo de tasas de cambio PRIMARIAS
 # cambio a 1 año
@@ -223,7 +223,7 @@ tbl_varia <-
 
 ::: {.card title="Desempeño Histórico del Indicador Global de la Actividad Económica"}
 ```{r}
-#| label: visualización de las 4 series
+#| label: visualización de las 4 series igae
 #| warning: false
 #| message: false
 
@@ -274,7 +274,7 @@ df02 |>
   labs(title = "Desemepeño Histórico de las Series del IGAE",
        subtitle = paste("Indicadores de actividad económica Global, Primaria, Secundaria y Terciaria", text_cap),
        y = "Índice a valores constantes (base 2018)",
-       x = "Mes",
+       x = "Año_Mes",
        caption = paste("Fuente: INEGI: 
          Indicador Global de la Actividad Económica, base 2018, 
          series desestacionalizadas.<br>

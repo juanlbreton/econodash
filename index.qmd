@@ -9,3 +9,7 @@ author: "Juan L. Bretón, PMP"
 
 [Indicador Global de la Actividad Económica](igae_dd.qmd)
 
+
+## Producto Interno Bruto
+
+[Producto Interno Bruto Trimestral](pib_dd.qmd)

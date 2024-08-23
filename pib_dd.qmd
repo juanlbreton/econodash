@@ -1,0 +1,223 @@
+---
+title: "PIB Trimestral"
+format:
+  dashboard:
+    logo: images/lytica_logo_white_bk.png
+    orientation: columns
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+# Tendencia Histórica
+
+## Column {width="35%"}
+
+```{r}
+#| label: librerias pib
+#| warning: false
+#| message: false
+
+# librerias
+library(tidyverse)
+library(styleBreton)
+library(gt)
+library(ggtext)
+```
+
+
+```{r}
+#| label: carga de datos pib
+#| warning: false
+#| message: false
+#| echo: false
+#| include: false
+
+# importa datos
+suppressWarnings(source("source/data_2018.R", 
+                        echo = FALSE))
+```
+
+
+```{r}
+#| label: tendencia lineal pib
+
+## Tendencia lineal del PIB
+# serie de PIB
+df_pib <- 
+  df02 |> 
+  filter(denominacion == "Producto interno bruto")
+
+
+# tendencia lineal hasta elección presidencial
+tendencia <- 
+  df_pib |>
+  filter(fecha_inicio < "2018-07-02") |> 
+  lm(formula = valor ~ fecha_inicio, 
+     data = _)
+```
+
+```{r}
+#| label: ultimo trimestre pib
+
+# ultimo trimestre
+ult_trim <- 
+  df_pib |> 
+  select(trimestre) |> 
+  slice_max(order_by = trimestre, n = 1) |> 
+  pull()
+
+ult_tm <- 
+  str_extract(ult_trim, "\\d{1}$")
+
+ult_anio <- 
+  str_extract(ult_trim, "^\\d{4}")
+```
+
+::: {.card title="Variación Anual del PIB"}
+```{r}
+#| label: variacion 12 meses global pib
+
+## cálculo de tasas de cambio 
+# con año anterior
+val_actual <- 
+  df_pib |> 
+  slice_max(order_by = fecha_final) |> 
+  pull(valor)
+
+val_anio_ant <- 
+  df_pib |> 
+  filter(fecha_final == max(fecha_final) - years(1)) |> 
+  pull(valor)
+
+# tasa_anual <- 
+#   (val_actual - val_anio_ant) / val_anio_ant
+
+# value box
+bslib::value_box(
+  paste("Variación respecto al trimestre", 
+        ult_tm, "de", ult_anio),
+  theme = "primary",
+  value = scales::percent((val_actual - val_anio_ant) / val_anio_ant,
+                          accuracy = 0.01)
+)
+```
+
+:::
+
+
+::: {.card title="Variación Trimestral del PIB"}
+```{r}
+#| label: variacion mes anterior global pib
+
+# cambio a 1 trimestre
+val_trim_ant <- 
+  df_pib |> 
+  mutate(ante = lag(valor)) |> 
+  slice_max(order_by = trimestre) |> 
+  pull(ante)
+
+# value box
+bslib::value_box(
+  paste("Variación respecto al trimestre", 
+        as.numeric(ult_tm) - 1, "de", ult_anio),
+  theme = "primary",
+  value = scales::percent((val_actual - val_trim_ant) / val_trim_ant,
+                          accuracy = 0.01)
+)
+```
+
+:::
+
+
+## Column {width="65%"}
+
+::: {.card title="Tendencia Histórica del Producto Interno Bruto"}
+
+```{r}
+#| label: visualización de la serie pib
+#| warning: false
+#| message: false
+
+
+# texto para caption
+text_cap <-  
+  paste("hasta el trimestre", 
+         ult_tm, "de", ult_anio)
+
+# gráfica
+df_pib |> 
+  mutate(predic = predict(tendencia, newdata = df_pib)) |>
+  ggplot(aes(x = trimestre, 
+             y = valor)) +
+  geom_line(aes(color = "pib"),
+            alpha = 0.8,
+            linewidth = 0.65) +
+  geom_smooth(aes(y = predic, 
+                  color = "tendencia"),
+              linewidth = 0.35, 
+              method = "lm") +
+  geom_vline(xintercept = df_pib |> 
+               filter(trimestre == 2018.2) |>
+               pull(trimestre),
+            color = "grey30",
+            alpha = 0.5) +
+  annotate(geom = "text",
+           label = "Elección de López Obrador",
+           x = 2018.2 - 0.5, 
+           y = 19050000,
+           family = "Encode Sans Condensed",
+           color = "grey30",
+           size = 3.0,
+           angle = 90) +
+  labs(title = "Desempeño y Tendencia Históricos de la Economía Mexicana",
+       subtitle = "La línea roja refleja la tendencia histórica hasta la última elección presidencial.",
+       x = "Año.Trimestre",
+       y = "PIB (Miles de millones de pesos)",
+       caption = "Fuente: INEGI, 
+           Producto interno bruto trimestral. Miles de millones de pesos a precios de 2018. 
+           Series desestacionalizadas.<br>
+           Modelaje y visualización: Juan L. Bretón, PMP | @juanlbreton" ) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = rel(0.85)),
+        panel.grid.major = element_line(color = "grey97"),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "#FFFFFF"),
+        axis.line = element_line(color = "darkgrey"),
+        text = element_text(family = "Open Sans Condensed"),
+        plot.title.position = "plot",
+        plot.caption = element_markdown(color = "darkgrey",
+                                        hjust = 0),
+        plot.caption.position = "plot") +
+  scale_color_manual(name = NULL,
+                     aesthetics = "color",
+                     values = c("steelblue", "darkred"),
+                     labels = c("PIB trimestral", "Tendencia lineal")) +
+  scale_y_continuous(labels = scales::dollar_format(big.mark = ",",
+                                                    scale = 1 / 1e3)) +
+  scale_x_continuous(breaks = seq(min(df_pib$trimestre),
+                                  max(df_pib$trimestre),
+                                  by = 6))
+```
+
+
+:::
+
+# Comparado
+
+## Column {width="35%"}
+
+
+
+## Column {width="65%"}
+
+
+
+# Tasa Anual Promedio
+
+
+## Column {width="35%"}
+
+
+
+## Column {width="65%"}
