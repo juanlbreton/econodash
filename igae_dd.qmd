@@ -280,18 +280,18 @@ df02 |>
          Indicador Global de la Actividad Económica, base 2018, 
          series desestacionalizadas.<br>
          Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton")) +
-  theme_breton() +
-  # theme(legend.position = "top",
-  #       axis.text.x = element_text(size = rel(0.85)),
-  #       panel.grid.major = element_line(color = "grey97"),
-  #       panel.grid.minor = element_blank(),
-  #       panel.background = element_rect(fill = "#FFFFFF"),
-  #       axis.line = element_line(color = "darkgrey"),
-  #       text = element_text(family = "Open Sans Condensed"),
-  #       plot.title.position = "plot",
-  #       plot.caption = element_markdown(color = "darkgrey",
-  #                                       hjust = 0),
-  #       plot.caption.position = "plot") +
+  # theme_breton() +
+  theme(legend.position = "top",
+        axis.text.x = element_text(size = rel(0.85)),
+        panel.grid.major = element_line(color = "grey97"),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "#FFFFFF"),
+        axis.line = element_line(color = "darkgrey"),
+        text = element_text(family = "Open Sans Condensed"),
+        plot.title.position = "plot",
+        plot.caption = element_markdown(color = "darkgrey",
+                                        hjust = 0),
+        plot.caption.position = "plot") +
   scale_x_date(breaks = seq(min(df02$fecha_final),
                             max(df02$fecha_final),
                             length.out = 10),
