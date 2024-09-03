@@ -169,7 +169,7 @@ df_pib |>
             color = "grey30",
             alpha = 0.5) +
   annotate(geom = "text",
-           label = "Elección de Claudia Sheinbaum",
+           label = "Elección de Sheinbaum Pardo",
            x = 2024.2 - 0.5, 
            y = 19050000,
            family = "Encode Sans Condensed",
@@ -269,8 +269,8 @@ df_pib_escala |>
              color = "darkgrey",
              alpha = 0.5) +
   labs(title = "Desempeño de la Economía Mexicana en cada Periodo Presidencial",
-       subtitle = paste0("Producto Interno Bruto escalado hasta trimestre", 
-                         ult_tm, " de", ult_anio),
+       subtitle = paste0("Producto Interno Bruto escalado hasta trimestre ", 
+                         ult_tm, " de ", ult_anio),
        x = "Trimestre",
        y = "Índice 0 = Inicio de cada sexenio",
        caption = "Fuente: INEGI, 
