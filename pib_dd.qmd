@@ -183,7 +183,7 @@ df_pib |>
        caption = "Fuente: INEGI, 
            Producto interno bruto trimestral. Miles de millones de pesos a precios de 2018. 
            Series desestacionalizadas.<br>
-           Modelaje y visualización: Juan L. Bretón, PMP | @juanlbreton" ) +
+           Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton" ) +
   theme(legend.position = "none",
         axis.text.x = element_text(size = rel(0.85)),
         panel.grid.major = element_line(color = "grey97"),
@@ -276,7 +276,7 @@ df_pib_escala |>
        caption = "Fuente: INEGI, 
            Producto interno bruto trimestral. Precios de 2018. 
            Series desestacionalizadas.<br>
-           Modelaje y visualización: Juan L. Bretón, PMP | @juanlbreton" ) +
+           Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton" ) +
   theme(legend.position = "top",
         axis.text.x = element_text(size = rel(0.85)),
         panel.grid.major = element_line(color = "grey97"),
@@ -391,7 +391,7 @@ df_tasa_sexenal |>
        caption = "Fuente: INEGI, 
            Producto interno bruto trimestral. Precios de 2018. 
            Series desestacionalizadas.<br>
-           Modelaje y visualización: Juan L. Bretón, PMP | @juanlbreton" ) +
+           Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton" ) +
   scale_color_manual(values = c("#34495E", "#F39C12", "#16A085", 
                                 "#8E44AD", "#C0392B")) +
   theme(legend.position = "none",
