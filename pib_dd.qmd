@@ -33,7 +33,7 @@ library(ggtext)
 #| include: false
 
 # importa datos
-suppressWarnings(source("source/data_2018.R", 
+suppressWarnings(source("source/data_pib_b2018.R", 
                         echo = FALSE))
 ```
 

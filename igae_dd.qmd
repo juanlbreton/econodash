@@ -34,7 +34,8 @@ library(ggtext)
 #| include: false
 
 # importa datos
-suppressMessages(source("source/data_clean_b18_00.R"))
+suppressMessages(source("source/data_igae_b2018.R",
+                        echo = FALSE))
 ```
 
 ```{r}

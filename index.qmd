@@ -12,6 +12,13 @@ El Índice Global de la Actividad Económica (IGAE) es una medida que nos permit
 [Indicador Global de la Actividad Económica](igae_dd.qmd)
 
 
+## Índice Nacional de Precios al Consumidor
+
+El Índice Nacional de Precios al Consumidor (INPC) es un indicador económico que mide la variación de los precios de una canasta representativa de bienes y servicios en México a lo largo del tiempo. Se utiliza principalmente para calcular la inflación, es decir, el aumento generalizado de los precios. El INPC refleja cómo los precios de productos de consumo básicos,  tales como alimentos, transporte, vivienda y otros, cambian en comparación con un periodo base.
+
+[Índice Nacional de Precios al Consumidor](inpc_dd.qmd)
+
+
 ## Producto Interno Bruto
 
 El Producto Interno Bruto trimestral (PIB trimestral) es una medida que nos indica el valor total de todos los bienes y servicios finales producidos del país durante un trimestre específico.
