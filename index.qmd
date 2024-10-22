@@ -7,7 +7,7 @@ author: "Juan L. Bretón, PMP"
 
 ## Indicador Anticipado de Desempeño de la Economía Mexicana
 
-El Índice Global de la Actividad Económica (IGAE) es una medida que nos permite conocer la evolución general de la economía mexicana a corto plazo. Este indicador se publica mensualmente y es un indicador adelantado del Producto Interno Bruto (PIB).
+El Indicador Global de la Actividad Económica (IGAE) es una medida que nos permite conocer la evolución general de la economía mexicana a corto plazo. Este indicador se publica mensualmente y es un indicador adelantado del Producto Interno Bruto (PIB).
 
 [Indicador Global de la Actividad Económica](igae_dd.qmd)
 
