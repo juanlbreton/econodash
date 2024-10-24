@@ -355,7 +355,8 @@ df_global_01 <- df01 %>%
 df_global_02 <- df_global_01 %>% 
   mutate(mes_sexenio = map(data, pon_num),
          escalado = map(data, calc_escala)) %>% 
-  unnest(everything())
+  unnest(everything()) |> 
+  mutate(mes_sexenio = mes_sexenio - 1)
 ```
 
 ::: {.card title="Crecimiento Acumulado del Último Sexenio"}
@@ -402,6 +403,9 @@ df_global_02 %>%
              y = escalado,
              color = presidente)) +
   geom_line(alpha = 0.65) +
+  geom_hline(yintercept = 0,
+             alpha = 0.46,
+             color = "grey80") +
   scale_color_manual(name = "Presidente",
                      values = c("#34495E", "#F39C12", "#16A085", 
                                 "#8E44AD", "#9F0D08", "#013334")) +
