@@ -10,10 +10,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Inflación
+# Histórico
 
-
-## Column {width=35%}
+## Column {width="35%"}
 
 ```{r}
 #| label: librerias inpc
@@ -79,7 +78,6 @@ bslib::value_box(
 ```
 :::
 
-
 ::: {.card title="Variación mensual del INPC"}
 ```{r}
 #| label: variacion mes anterior global inpc
@@ -103,7 +101,7 @@ bslib::value_box(
         format(seq(ulti_fecha, 
                    length = 2, 
                    by = "-33 day")[2], 
-               "%B %Y")),
+               "%Bb %Y")),
   theme = "primary",
   value = scales::percent((mes_actual - mes_anterior) / mes_anterior,
                           accuracy = 0.01)
@@ -111,65 +109,81 @@ bslib::value_box(
 ```
 :::
 
+## Column {width="65%"}
 
-
-
-
-
-
-
-## Column {width=65%}
-
-::: {.card title="Desempeño Histórico de la Inflación (INPC y sus componentes)"}
-
+::: {.card title="Variación Histórica de la Inflación (INPC y sus componentes)"}
 ```{r}
 #| label: grafico inpc
 #| warning: false
 #| message: false
 
-# texto para título
-titu <- 
-  paste("Variación Mensual del INPC",
-        "de Enero 2003 a", 
-        format(ulti_fecha, "%B %Y"), ".")
 
-# gráfico
-inflac_01 |> 
-  ggplot() +
-  geom_line(data = inflac_01 |> 
-              filter(concepto == "Inpc"),
+# función para calcular variación anual
+calcular_var_anual <- function(df){
+  if_else(is.na((df$valor - lag(df$valor, n = 12)) / lag(df$valor, n = 12)),
+          0, 
+          (df$valor - lag(df$valor, n = 12)) / lag(df$valor, n = 12))
+}
+
+# función para calcular variación anual
+calcular_var_mes <- function(df){
+  if_else(is.na((df$valor - lag(df$valor)) / lag(df$valor)),
+          0, 
+          (df$valor - lag(df$valor)) / lag(df$valor))
+}
+
+
+
+# columna de variación por concepto
+inflac_variac <- 
+  inflac_01 |> 
+  nest(.by = concepto) |> 
+  mutate(var_anual = map(data, calcular_var_anual),
+         var_mes = map(data, calcular_var_mes)) |> 
+  unnest(everything())
+  
+
+# gráfica de variación
+ggplot() +
+  geom_line(data = inflac_variac |> 
+              filter(concepto == "Subyacente" & fecha >= as_date("2004-01-01")),
             aes(x = fecha, 
-                y = valor,
-                group = concepto,
-                color = "inpc"),
-            alpha = 0.5,
-            linewidth = 0.905) +
-  geom_line(data = inflac_01 |> 
-              filter(concepto == "Subyacente"),
-            aes(x = fecha, 
-                y = valor,
+                y = var_anual,
                 group = concepto,
                 color = "subya"),
-            alpha = 0.45) +
-  geom_line(data = inflac_01 |> 
-              filter(concepto == "No Subyacente"),
+            alpha = 0.5,
+            linewidth = 0.305) +
+  geom_line(data = inflac_variac |> 
+              filter(concepto == "No Subyacente" & fecha >= as_date("2004-01-01")),
             aes(x = fecha, 
-                y = valor,
+                y = var_anual,
                 group = concepto,
                 color = "nosub"),
-            alpha = 0.45) +
+            alpha = 0.5,
+            linewidth = 0.305) +
+  geom_line(data = inflac_variac |> 
+              filter(concepto == "Inpc" & fecha >= as_date("2004-01-01")),
+            aes(x = fecha, 
+                y = var_anual,
+                group = concepto,
+                color = "inpc"),
+            alpha = 0.65,
+            linewidth = 0.805) +
   scale_color_manual(breaks = c("inpc", "subya", "nosub"),
                      values = c("darkred", "darkgreen", "darkorange"),
                      labels = c("Inflación general",
                                  "Inflación subyacente",
                                  "Inflación no subyacente"),
-                     name = "Componente del Índice de Precios") +
-  labs(title = "Desemepeño Histórico del Índide de Precios al Consumidor",
-       subtitle = paste(titu),
-       y = "Índice  (base 2018)",
+                     name = "Componentes de la Inflación") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Variación Histórica del Índide de Precios al Consumidor",
+       subtitle = paste("Porcentaje de variación anualizada del INPC",
+                        "de Ene 2004 a", 
+                        format(ulti_fecha, "%b %Y"), "."),
+       y = "Variación Anualizada (%)",
        x = "Año_Mes",
        caption = paste("Fuente: INEGI: 
-         Índice Nacional de Precios al Consumidor, base 2018.<br>
+         Índice Nacional de Precios al Consumidor.<br>
          Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton")) +
   # theme_breton() +
   theme(legend.position = "top",
@@ -187,24 +201,142 @@ inflac_01 |>
                             max(inflac_01$fecha),
                             length.out = 10),
                date_labels = "%Y_%m")
+
+
+
+# 
+# # texto para título
+# titu <- 
+#   paste("Variación Mensual del INPC",
+#         "de Enero 2003 a", 
+#         format(ulti_fecha, "%B %Y"), ".")
+# 
+# 
+# # gráfico
+# inflac_01 |> 
+#   ggplot() +
+#   geom_line(data = inflac_01 |> 
+#               filter(concepto == "Inpc"),
+#             aes(x = fecha, 
+#                 y = valor,
+#                 group = concepto,
+#                 color = "inpc"),
+#             alpha = 0.5,
+#             linewidth = 0.905) +
+#   geom_line(data = inflac_01 |> 
+#               filter(concepto == "Subyacente"),
+#             aes(x = fecha, 
+#                 y = valor,
+#                 group = concepto,
+#                 color = "subya"),
+#             alpha = 0.45) +
+#   geom_line(data = inflac_01 |> 
+#               filter(concepto == "No Subyacente"),
+#             aes(x = fecha, 
+#                 y = valor,
+#                 group = concepto,
+#                 color = "nosub"),
+#             alpha = 0.45) +
+#   scale_color_manual(breaks = c("inpc", "subya", "nosub"),
+#                      values = c("darkred", "darkgreen", "darkorange"),
+#                      labels = c("Inflación general",
+#                                  "Inflación subyacente",
+#                                  "Inflación no subyacente"),
+#                      name = "Componente del Índice de Precios") +
+#   labs(title = "Desemepeño Histórico del Índide de Precios al Consumidor",
+#        subtitle = paste(titu),
+#        y = "Índice  (base 2018)",
+#        x = "Año_Mes",
+#        caption = paste("Fuente: INEGI: 
+#          Índice Nacional de Precios al Consumidor, base 2018.<br>
+#          Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton")) +
+#   # theme_breton() +
+#   theme(legend.position = "top",
+#         axis.text.x = element_text(size = rel(0.85)),
+#         panel.grid.major = element_line(color = "grey97"),
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_rect(fill = "#FFFFFF"),
+#         axis.line = element_line(color = "darkgrey"),
+#         text = element_text(family = "Open Sans Condensed"),
+#         plot.title.position = "plot",
+#         plot.caption = element_markdown(color = "darkgrey",
+#                                         hjust = 0),
+#         plot.caption.position = "plot") +
+#   scale_x_date(breaks = seq(min(inflac_01$fecha),
+#                             max(inflac_01$fecha),
+#                             length.out = 10),
+#                date_labels = "%Y_%m")
   
+```
+:::
+
+# Por Componente
+
+## Column {width="35%"}
+
+```{r}
+
+
+
 ```
 
 
-:::
 
 
+## Column {width="65%"}
 
 
+```{r}
+#| label: tabla inpc
 
-
-
-
-
-
-
-
-
+inflac_variac |>
+  slice_max(order_by = fecha,
+            n = 1) |> 
+  mutate(ord = case_when(
+    str_detect(concepto, "Agropecuarios") ~ 6,
+    str_detect(concepto, "Energéticos") ~ 7,
+    str_detect(concepto, "No") ~ 5,
+    str_detect(concepto, "Inpc") ~ 1,
+    str_detect(concepto, "Mercancías") ~ 3,
+    str_detect(concepto, "Servicios") ~ 4,
+    str_detect(concepto, "Subyacente") ~ 2,
+    .default = 0
+  )) |> 
+  arrange(ord) |> 
+  select(-c(fecha, valor, ord)) |> 
+  mutate(concepto = str_replace(concepto, "Inpc", "Inflación General")) |> 
+  gt() |> 
+  tab_header(
+    title = "Variación Anualizada del INPC y sus Componentes",
+    subtitle = paste("Hasta", 
+                     format(ulti_fecha, "%b %Y"), ".")) |> 
+  cols_label(
+    concepto = "Componente",
+    var_anual = "Anual (%)",
+    var_mes = "Mensual (%)"
+  ) |>
+  fmt_percent(columns = 2:3) |> 
+  tab_source_note(
+    source_note = html("Fuente: INEGI: Índice Nacional de Precios al Consumidor.<br>
+    Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton")
+  ) |> 
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_body(rows = concepto %in% c("Inpc"))
+  ) |> 
+  tab_style(
+    style = cell_text(indent = px(10)),
+    locations = cells_body(rows = concepto %in% c("Subyacente", 
+                                                  "No Subyacente"))
+  ) |> 
+  tab_style(
+    style = cell_text(indent = px(20), weight = "lighter"),
+    locations = cells_body(rows = concepto %in% c("Subyacente: Mercancías", 
+                                                  "Subyacente: Servicios", 
+                                                  "No Subyacente: Agropecuarios", 
+                                                  "No Subyacente: Energéticos"))
+  )
+```
 
 
 
