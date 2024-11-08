@@ -101,7 +101,7 @@ bslib::value_box(
         format(seq(ulti_fecha, 
                    length = 2, 
                    by = "-33 day")[2], 
-               "%Bb %Y")),
+               "%B %Y")),
   theme = "primary",
   value = scales::percent((mes_actual - mes_anterior) / mes_anterior,
                           accuracy = 0.01)
@@ -280,11 +280,7 @@ ggplot() +
 
 ```
 
-
-
-
 ## Column {width="65%"}
-
 
 ```{r}
 #| label: tabla inpc
@@ -337,18 +333,3 @@ inflac_variac |>
                                                   "No Subyacente: Energéticos"))
   )
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
