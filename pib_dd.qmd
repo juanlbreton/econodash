@@ -4,6 +4,7 @@ format:
   dashboard:
     logo: images/lytica_logo_white_bk.png
     orientation: columns
+    theme: [default, custom.scss]
 editor: visual
 editor_options: 
   chunk_output_type: console
