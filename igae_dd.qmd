@@ -364,24 +364,24 @@ df_global_02 <- df_global_01 %>%
 #| label: crecimiento acumulado sexenio
 
 # crecimiento de inicio a fin de sexenio 
-inicio_lopez <- 
+inicio_actual_sexe <- 
   df_global_02 |> 
-  filter(presidente == "López") |> 
+  filter(presidente == "Sheinbaum") |> 
   head(n = 1) |> 
   pull(valor)
 
 
-ultimo_lopez <- 
+ultimo_actual_sexe <- 
   df_global_02 |> 
-  filter(presidente == "López") |> 
+  filter(presidente == "Sheinbaum") |> 
   tail(n = 1) |> 
   pull(valor)
 
 bslib::value_box(
-  paste("Crecimiento Acumulado del Sexenio hasta",
+  paste("Crecimiento Acumulado del Sexenio Actual hasta",
         format(ultim_fecha, "%b %Y")),
   theme = "primary",
-  value = scales::percent((ultimo_lopez - inicio_lopez) / inicio_lopez,
+  value = scales::percent((ultimo_actual_sexe - inicio_actual_sexe) / inicio_actual_sexe,
                           accuracy = 0.01)
 )
 ```
