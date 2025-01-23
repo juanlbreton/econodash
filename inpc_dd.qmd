@@ -169,6 +169,13 @@ ggplot() +
                 color = "inpc"),
             alpha = 0.65,
             linewidth = 0.805) +
+  geom_hline(yintercept = 0.03,
+             color = "grey60", linewidth = 6.5, alpha = 0.25) +
+  annotate(geom = "text",
+           x = as_date("2003-09-01"),
+           y = 0.03,
+           label = "Objetivo",
+           color = "grey45") +
   scale_color_manual(breaks = c("inpc", "subya", "nosub"),
                      values = c("darkred", "darkgreen", "darkorange"),
                      labels = c("Inflación general",
