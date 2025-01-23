@@ -100,7 +100,7 @@ bslib::value_box(
   paste("Variación respecto a", 
         format(seq(ulti_fecha, 
                    length = 2, 
-                   by = "-33 day")[2], 
+                   by = "-30 day")[2], 
                "%B %Y")),
   theme = "primary",
   value = scales::percent((mes_actual - mes_anterior) / mes_anterior,
