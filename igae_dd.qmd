@@ -408,7 +408,7 @@ df_global_02 %>%
              color = "grey80") +
   scale_color_manual(name = "Presidente",
                      values = c("#34495E", "#F39C12", "#16A085", 
-                                "#8E44AD", "#9F0D08", "#013334")) +
+                                "#8E44AD", "#9F0D08", "#002BD8")) +
   # theme_breton() +
   theme(legend.position = "top",
         text = element_text(family = "Open Sans Condensed"),
