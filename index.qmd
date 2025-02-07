@@ -21,8 +21,6 @@ El Índice Nacional de Precios al Consumidor (INPC) es un indicador económico q
 
 ## Producto Interno Bruto
 
-El Producto Interno Bruto trimestral (PIB trimestral) es una medida que nos indica el valor total de todos los bienes y servicios finales producidos del país durante un trimestre específico.
-
-El cálculo del PIB trimestral es complejo y se basa en una variedad de datos, como la producción industrial, las ventas al por menor, la inversión y los gastos del gobierno. Existen diferentes métodos para calcular el PIB, pero el más común es el método del gasto, que suma el gasto de los consumidores, las inversiones de las empresas, el gasto del gobierno y las exportaciones netas (exportaciones menos importaciones).
+El Producto Interno Bruto trimestral (PIB trimestral) es una medida que nos indica el valor total de todos los bienes y servicios finales producidos del país durante un trimestre específico. El cálculo del PIB trimestral es complejo y se basa en una variedad de datos, como la producción industrial, las ventas al por menor, la inversión y los gastos del gobierno.
 
 [Producto Interno Bruto Trimestral](pib_dd.qmd)
