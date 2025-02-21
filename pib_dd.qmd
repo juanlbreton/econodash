@@ -292,7 +292,7 @@ df_pib_escala |>
         plot.caption.position = "plot") +
   scale_color_manual(name = "Presidente",
                      values = c("#34495E", "#F39C12", "#16A085", 
-                                "#8E44AD", "#C0392B")) +
+                                "#8E44AD", "#C0392B", "#002BD8")) +
   scale_x_continuous(breaks = seq(min(df_pib_escala$num_trimestre),
                                   max(df_pib_escala$num_trimestre)))
 ```
@@ -395,7 +395,7 @@ df_tasa_sexenal |>
            Series desestacionalizadas.<br>
            Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton" ) +
   scale_color_manual(values = c("#34495E", "#F39C12", "#16A085", 
-                                "#8E44AD", "#C0392B")) +
+                                "#8E44AD", "#C0392B", "#002BD8")) +
   theme(legend.position = "none",
         axis.text.x = element_text(size = rel(0.85)),
         panel.grid.major = element_line(color = "grey97"),
