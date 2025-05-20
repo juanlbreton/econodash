@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://juanlbreton.github.io/econodash/igae_dd.html</loc>
-    <lastmod>2025-05-13T07:22:30.382Z</lastmod>
-  </url>
-  <url>
-    <loc>https://juanlbreton.github.io/econodash/index.html</loc>
-    <lastmod>2025-05-13T07:22:30.383Z</lastmod>
-  </url>
-  <url>
     <loc>https://juanlbreton.github.io/econodash/pib_dd.html</loc>
-    <lastmod>2025-05-13T07:22:30.384Z</lastmod>
+    <lastmod>2025-05-20T07:22:07.396Z</lastmod>
   </url>
   <url>
     <loc>https://juanlbreton.github.io/econodash/inpc_dd.html</loc>
-    <lastmod>2025-05-13T07:22:30.384Z</lastmod>
+    <lastmod>2025-05-20T07:22:07.396Z</lastmod>
   </url>
   <url>
     <loc>https://juanlbreton.github.io/econodash/about.html</loc>
-    <lastmod>2025-05-13T07:22:30.382Z</lastmod>
+    <lastmod>2025-05-20T07:22:07.394Z</lastmod>
+  </url>
+  <url>
+    <loc>https://juanlbreton.github.io/econodash/igae_dd.html</loc>
+    <lastmod>2025-05-20T07:22:07.394Z</lastmod>
+  </url>
+  <url>
+    <loc>https://juanlbreton.github.io/econodash/index.html</loc>
+    <lastmod>2025-05-20T07:22:07.395Z</lastmod>
   </url>
 </urlset>
