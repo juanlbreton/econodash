@@ -341,7 +341,7 @@ df_tasa_sexenal <-
 # calculo
 tasa_media_sl <- 
   df_tasa_sexenal |> 
-  filter(presidente != "López") |> 
+  filter(presidente %in% c("Zedillo", "Fox", "Calderón", "Peña")) |> 
   summarize(media_medias = mean(tasa_promedio)) |> 
   pull(media_medias)
 
@@ -350,7 +350,7 @@ tasa_media_sl <-
 bslib::value_box(
   paste("Tasa de crecimiento anual promedio de 1994 a 2018"),
   theme = "primary",
-  value = scales::percent(0.022,
+  value = scales::percent(tasa_media_sl,
                           accuracy = 0.01)
 )
 ```
@@ -386,8 +386,8 @@ df_tasa_sexenal |>
                                    accuracy = 0.01),
            size = 3.25,
            color = "grey45") +
-  labs(title = "Tasa Anual Promedio de Crecimiento de la Economía Mexicana",
-       subtitle = "Durante el sexenio de cada uno de los últimos 5 Presidentes.",
+  labs(title = "Tasa Anual Media de Crecimiento de la Economía Mexicana",
+       subtitle = "Durante el sexenio de cada uno de los últimos 6 Presidentes. La línea gris representa la media de las medias anuales",
        x = NULL,
        y = "Tasa anual promedio",
        caption = "Fuente: INEGI, 
