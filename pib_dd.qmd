@@ -350,7 +350,7 @@ tasa_media_sl <-
 bslib::value_box(
   paste("Tasa de crecimiento anual promedio de 1994 a 2018"),
   theme = "primary",
-  value = scales::percent(tasa_media_sl,
+  value = scales::percent(0.022,
                           accuracy = 0.01)
 )
 ```
