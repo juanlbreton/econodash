@@ -116,8 +116,15 @@ val_trim_ant <-
 
 # value box
 bslib::value_box(
-  paste("Variación respecto al trimestre", 
-        as.numeric(ult_tm) - 1, "de", ult_anio),
+  paste(
+    "Variación respecto al trimestre", 
+    if_else(
+      condition = ult_tm != 1, 
+      true = paste(as.numeric(ult_tm) - 1, "de", ult_anio),
+      false = paste(4, "de", as.numeric(ult_anio) - 1)
+    )
+    # as.numeric(ult_tm) - 1, "de", ult_anio
+  ),
   theme = "primary",
   value = scales::percent((val_actual - val_trim_ant) / val_trim_ant,
                           accuracy = 0.01)
