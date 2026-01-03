@@ -309,7 +309,7 @@ df_pib_escala |>
 
 ## Column {width="35%"}
 
-::: {.card title="Tasa de Crecimiento Anual Promedio Anterior"}
+::: {.card title="Tasa de Crecimiento Anual Promedio Hasta 2018"}
 ```{r}
 #| label: tasa crecimiento desde inicio pib
 
@@ -361,6 +361,32 @@ bslib::value_box(
                           accuracy = 0.01)
 )
 ```
+:::
+
+::: {.card title="Tasa de Crecimiento Anaual Promedio Después de 2018"}
+
+```{r}
+#| label: tasa crecimiento anual 4t
+
+# calculo
+tasa_media_4t <- 
+  df_tasa_sexenal |> 
+  filter(presidente %in% c("López", "Sheinbaum")) |> 
+  summarize(media_medias = mean(tasa_promedio)) |> 
+  pull(media_medias)
+
+
+# value box
+bslib::value_box(
+  paste("Tasa de crecimiento anual promedio de 2018 a la fecha"),
+  theme = "primary",
+  value = scales::percent(tasa_media_4t,
+                          accuracy = 0.01)
+)
+
+```
+
+
 :::
 
 ## Column {width="65%"}
