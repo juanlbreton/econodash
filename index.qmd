@@ -7,20 +7,27 @@ author: "Juan L. Bretón, PMP"
 
 ## Indicador Anticipado de Desempeño de la Economía Mexicana
 
-El Indicador Global de la Actividad Económica (IGAE) es una medida que nos permite conocer la evolución general de la economía mexicana a corto plazo. Este indicador se publica mensualmente y es un indicador adelantado del Producto Interno Bruto (PIB).
+El Indicador Global de la Actividad Económica (IGAE) es un indicador mensual que estima la evolución oportuna de la actividad económica de México. Funciona como un termómetro de corto plazo del PIB, al integrar el desempeño de los sectores primario, secundario y terciario, y permite identificar aceleraciones o desaceleraciones de la economía antes de que se publique el PIB trimestral por INEGI.
 
 [Indicador Global de la Actividad Económica](igae_dd.qmd)
 
 
 ## Índice Nacional de Precios al Consumidor
 
-El Índice Nacional de Precios al Consumidor (INPC) es un indicador económico que mide la variación de los precios de una canasta representativa de bienes y servicios en México a lo largo del tiempo. Se utiliza principalmente para calcular la inflación, es decir, el aumento generalizado de los precios. El INPC refleja cómo los precios de productos de consumo básicos,  tales como alimentos, transporte, vivienda y otros, cambian en comparación con un periodo base.
+El Índice Nacional de Precios al Consumidor (INPC) es el indicador que mide la inflación en México, al reflejar el cambio promedio en los precios de una canasta representativa de bienes y servicios consumidos por los hogares. Permite evaluar la pérdida de poder adquisitivo y es referencia clave para decisiones de política monetaria, ajustes salariales y análisis económico, calculado y publicado por INEGI.
 
 [Índice Nacional de Precios al Consumidor](inpc_dd.qmd)
 
 
+## Índice de Formación Bruta de Capital Fijo
+
+El Índice de Formación Bruta de Capital Fijo es un indicador que mide la inversión en activos productivos de la economía —como maquinaria, equipo y construcción— y refleja la capacidad futura de crecimiento del país. Su evolución permite evaluar el dinamismo de la inversión y las expectativas de largo plazo de las empresas, con información publicada por INEGI.
+
+[Índice de Formación de Capital Bruto](inversion_dd.qmd)
+
+
 ## Producto Interno Bruto
 
-El Producto Interno Bruto trimestral (PIB trimestral) es una medida que nos indica el valor total de todos los bienes y servicios finales producidos del país durante un trimestre específico. El cálculo del PIB trimestral es complejo y se basa en una variedad de datos, como la producción industrial, las ventas al por menor, la inversión y los gastos del gobierno.
+El Producto Interno Bruto trimestral (PIB trimestral) es el indicador que mide el valor total de los bienes y servicios finales producidos en la economía durante un periodo determinado. Ofrece, en el corto plazo, una visión oportuna, completa y coherente de la evolución de las actividades económicas del país y permite evaluar el tamaño y el crecimiento de la actividad económica, lo que resulta útil como referencia central para el análisis macroeconómico y la formulación de políticas públicas, con estimaciones publicadas por INEGI.
 
 [Producto Interno Bruto Trimestral](pib_dd.qmd)
