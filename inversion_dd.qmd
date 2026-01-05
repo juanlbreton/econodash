@@ -1,0 +1,213 @@
+---
+title: "Índice de Formación Bruta de Capital Fijo"
+format:
+  dashboard:
+    logo: images/lytica_logo_white_bk.png
+    orientation: columns
+    theme: [default, custom.scss]
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+# Histórico
+
+## Column {width="35%"}
+
+```{r}
+#| label: librerias inversion
+#| warning: false
+#| message: false
+
+# librerias
+library(tidyverse)
+library(styleBreton)
+library(gt)
+library(ggtext)
+```
+
+```{r}
+#| label: carga de datos inversion
+#| warning: false
+#| message: false
+#| echo: false
+#| include: false
+
+# importa datos
+suppressMessages(source("source/data_inversion_b2018.R",
+                        echo = FALSE))
+```
+
+```{r}
+#| label: implementacion de secuencia inversion
+
+## preparación de secuencia
+secuen <- function(base){
+  seq_along(along.with = base$val)
+}
+
+# implementación de secuencia
+inve_03 <- 
+  inve_02 |> 
+  mutate(
+    id_mes = str_c(str_extract(month(fecha_final), "\\d+$"),
+                   str_extract(year(fecha_final), "\\d{2}$"),
+                   sep = "_")
+  ) |> 
+  nest(.by = denominacion) |> 
+  mutate(sec = map(data, secuen)) |> 
+  unnest(cols = everything())
+```
+
+```{r}
+#| label: último mes de la serie inversion
+
+# extracción de último mes de la serie
+ulti_fecha <- 
+  inve_03 |> 
+  filter(denominacion == "Total" & fecha_final == max(fecha_final)) |> 
+  pull(fecha_final)
+```
+
+::: {.card title="Variación Anual de la Inversión"}
+```{r}
+#| label: variacion 12 meses global inversion
+
+## cálculo de tasas de cambio GLOBAL
+año_anterior <- inve_03 |> 
+  filter(denominacion == "Total") |>  
+  filter(fecha_final == max(fecha_final) - years(1)) |>  
+  pull(val)
+
+año_actual <- inve_03 |>  
+  filter(denominacion == "Total") |> 
+  filter(fecha_final == max(fecha_final)) |> 
+  pull(val)
+
+# value box
+bslib::value_box(
+  paste("Variación respecto a", 
+        format(ulti_fecha - years(1), "%B %Y")),
+  theme = "primary",
+  value = scales::percent((año_actual - año_anterior) / año_anterior,
+                          accuracy = 0.01)
+)
+```
+:::
+
+::: {.card title="Variación Mensual de la Inversión"}
+```{r}
+#| label: variacion mes anterior global inversion
+
+# cambio a 1 mes
+mes_anterior <- 
+  inve_03 |>  
+  filter(denominacion == "Total") |> 
+  filter(sec == max(sec) - 1) |> 
+  pull(val)
+
+mes_actual <- 
+  inve_03 |>  
+  filter(denominacion == "Total") |> 
+  filter(fecha_final == max(fecha_final)) |>  
+  pull(val)
+
+# value box
+bslib::value_box(
+  paste("Variación respecto a", 
+        format(seq(ulti_fecha, 
+                   length = 2, 
+                   by = "-33 day")[2], 
+               "%B %Y")),
+  theme = "primary",
+  value = scales::percent((mes_actual - mes_anterior) / mes_anterior,
+                          accuracy = 0.01)
+)
+```
+:::
+
+## Column {width="65%"}
+
+::: {.card title="Desempeño Histórico del Indicador de Formación de Capital Bruto"}
+```{r}
+#| label: visualización de las 4 series inversion
+#| warning: false
+#| message: false
+
+
+# texto para caption
+text_cap <-  
+  paste0("hasta ", 
+        format(ulti_fecha, "%b %Y"),
+        ".")
+
+# visualización de 4 series
+ggplot() +
+  geom_line(data = inve_03 |> 
+              filter(denominacion == "Total"),
+            aes(x = fecha_final, 
+                y = val, 
+                group = denominacion,
+                color = "total"),
+            alpha = 0.35,
+            linewidth = 0.85) +
+  geom_line(data = inve_03 |> 
+              filter(denominacion == "Construcción"),
+            aes(x = fecha_final, 
+                y = val, 
+                group = denominacion,
+                color = "construccion"),
+            alpha = 0.35) +
+  geom_line(data = inve_03 |> 
+              filter(denominacion == "Maq y Eq Nacional"),
+            aes(x = fecha_final, 
+                y = val, 
+                group = denominacion,
+                color = "maqyeqnal"),
+            alpha = 0.35) +
+  geom_line(data = inve_03 |> 
+              filter(denominacion == "Maq y Eq Importado"),
+            aes(x = fecha_final, 
+                y = val, 
+                group = denominacion,
+                color = "maqyeqimpo"),
+            alpha = 0.35) +
+  scale_color_manual(name = "Inversión",
+                     breaks = c("total", "construccion",
+                                "maqyeqnal", "maqyeqimpo"),
+                     values = c("#B22203", "#06B304", 
+                                "#00238D", "#9003C2"),
+                     labels = c("Total", "Construcción",
+                                "Maquinaria y Equipo Nacional",
+                                "Maquinaria y Equipo Importado")) +
+  labs(
+    title = "Desemepeño Histórico de las Series de Formación de Capital Bruto",
+    subtitle = 
+    paste("Inversión productiva hasta ", text_cap),
+    y = "Índice",
+    x = "Año_Mes",
+    caption = paste("Fuente: INEGI: 
+         Formación Bruta de Capital Fijo, base 2018, 
+         series desestacionalizadas.<br>
+         Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton")) +
+  # theme_breton() +
+  theme(legend.position = "top",
+        axis.text.x = element_text(size = rel(0.85)),
+        panel.grid.major = element_line(color = "grey97"),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "#FFFFFF"),
+        axis.line = element_line(color = "darkgrey"),
+        text = element_text(family = "Open Sans Condensed"),
+        plot.title.position = "plot",
+        plot.caption = element_markdown(color = "darkgrey",
+                                        hjust = 0),
+        plot.caption.position = "plot") +
+  scale_x_date(breaks = seq(min(inve_03$fecha_final),
+                            max(inve_03$fecha_final),
+                            length.out = 10),
+               date_labels = "%Y_%m")
+```
+:::
+
+
+
