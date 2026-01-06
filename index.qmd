@@ -21,7 +21,7 @@ El Índice Nacional de Precios al Consumidor (INPC) es el indicador que mide la 
 
 ## Índice de Formación Bruta de Capital Fijo
 
-El Índice de Formación Bruta de Capital Fijo es un indicador que mide la inversión en activos productivos de la economía —como maquinaria, equipo y construcción— y refleja la capacidad futura de crecimiento del país. Su evolución permite evaluar el dinamismo de la inversión y las expectativas de largo plazo de las empresas, con información publicada por INEGI.
+El Índice de Formación Bruta de Capital Fijo es un indicador que mide la inversión en activos productivos de la economía, como maquinaria, equipo y construcción, y refleja la capacidad futura de crecimiento del país. Su evolución permite evaluar el dinamismo de la inversión y las expectativas de largo plazo de las empresas, con información publicada por INEGI.
 
 [Índice de Formación de Capital Bruto](inversion_dd.qmd)
 
