@@ -149,7 +149,7 @@ ggplot() +
                 y = val, 
                 group = denominacion,
                 color = "total"),
-            alpha = 0.35,
+            alpha = 0.85,
             linewidth = 0.85) +
   geom_line(data = inve_03 |> 
               filter(denominacion == "Construcción"),
@@ -172,10 +172,36 @@ ggplot() +
                 group = denominacion,
                 color = "maqyeqimpo"),
             alpha = 0.35) +
+  geom_vline(xintercept = inve_03 |> 
+               filter(id_mes == "7_18") |>
+               pull(fecha_final),
+            color = "grey30",
+            alpha = 0.5) +
+  annotate(geom = "text",
+           label = "Elección de López Obrador",
+           x = as_date("2018-07-31") - 135, 
+           y = 45,
+           family = "Encode Sans Condensed",
+           color = "grey30",
+           size = 3.0,
+           angle = 90) +
+  geom_vline(xintercept = inve_03 |> 
+               filter(id_mes == "6_24") |>
+               pull(fecha_final),
+            color = "grey30",
+            alpha = 0.5) +
+  annotate(geom = "text",
+           label = "Elección de Sheinbaum Pardo",
+           x = as_date("2024-05-31") - 135, 
+           y = 45,
+           family = "Encode Sans Condensed",
+           color = "grey30",
+           size = 3.0,
+           angle = 90) +
   scale_color_manual(name = "Inversión",
                      breaks = c("total", "construccion",
                                 "maqyeqnal", "maqyeqimpo"),
-                     values = c("#B22203", "#06B304", 
+                     values = c("darkred", "#06B304", 
                                 "#00238D", "#9003C2"),
                      labels = c("Total", "Construcción",
                                 "Maquinaria y Equipo Nacional",
@@ -183,14 +209,14 @@ ggplot() +
   labs(
     title = "Desemepeño Histórico de las Series de Formación de Capital Bruto",
     subtitle = 
-    paste("Inversión productiva hasta ", text_cap),
+    paste("Inversión productiva", text_cap),
     y = "Índice",
     x = "Año_Mes",
     caption = paste("Fuente: INEGI: 
          Formación Bruta de Capital Fijo, base 2018, 
          series desestacionalizadas.<br>
-         Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton")) +
-  # theme_breton() +
+         Modelado y visualización: Juan L. Bretón, PMP | @juanlbreton")
+  ) +
   theme(legend.position = "top",
         axis.text.x = element_text(size = rel(0.85)),
         panel.grid.major = element_line(color = "grey97"),
@@ -208,6 +234,3 @@ ggplot() +
                date_labels = "%Y_%m")
 ```
 :::
-
-
-
