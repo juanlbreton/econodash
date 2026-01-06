@@ -279,7 +279,7 @@ df_pib_escala |>
              alpha = 0.5) +
   labs(title = "Desempeño de la Economía Mexicana en cada Periodo Presidencial",
        subtitle = paste0("Producto Interno Bruto escalado hasta trimestre ", 
-                         ult_tm, " de ", ult_anio),
+                         ult_tm, " de ", ult_anio,"."),
        x = "Trimestre",
        y = "Índice 0 = Inicio de cada sexenio",
        caption = "Fuente: INEGI, 
@@ -364,7 +364,6 @@ bslib::value_box(
 :::
 
 ::: {.card title="Tasa de Crecimiento Anaual Promedio Después de 2018"}
-
 ```{r}
 #| label: tasa crecimiento anual 4t
 
@@ -385,8 +384,6 @@ bslib::value_box(
 )
 
 ```
-
-
 :::
 
 ## Column {width="65%"}
@@ -419,8 +416,8 @@ df_tasa_sexenal |>
                                    accuracy = 0.01),
            size = 3.25,
            color = "grey45") +
-  labs(title = "Tasa Anual Media de Crecimiento de la Economía Mexicana",
-       subtitle = "Durante el sexenio de cada uno de los últimos 6 Presidentes. La línea gris representa la media de las medias anuales",
+  labs(title = "Tasa Anual Media Sexenal de Crecimiento de la Economía Mexicana",
+       subtitle = "La línea gris representa la media de las medias anuales",
        x = NULL,
        y = "Tasa anual promedio",
        caption = "Fuente: INEGI, 
