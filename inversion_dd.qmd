@@ -69,7 +69,7 @@ ulti_fecha <-
   pull(fecha_final)
 ```
 
-::: {.card title="Variación Anual de la Inversión"}
+::: {.card title="Variación Anual de la Inversión Productiva"}
 ```{r}
 #| label: variacion 12 meses global inversion
 
@@ -95,7 +95,7 @@ bslib::value_box(
 ```
 :::
 
-::: {.card title="Variación Mensual de la Inversión"}
+::: {.card title="Variación Mensual de la Inversión Productiva"}
 ```{r}
 #| label: variacion mes anterior global inversion
 
@@ -128,7 +128,7 @@ bslib::value_box(
 
 ## Column {width="65%"}
 
-::: {.card title="Desempeño Histórico del Indicador de Formación de Capital Bruto"}
+::: {.card title="Desempeño Histórico del Indicador de Formación Bruta de Capital Fijo"}
 ```{r}
 #| label: visualización de las 4 series inversion
 #| warning: false
@@ -207,7 +207,7 @@ ggplot() +
                                 "Maquinaria y Equipo Nacional",
                                 "Maquinaria y Equipo Importado")) +
   labs(
-    title = "Desemepeño Histórico de las Series de Formación de Capital Bruto",
+    title = "Desemepeño Histórico de las Series de Formación Bruta de Capital Fijo",
     subtitle = 
     paste("Inversión productiva", text_cap),
     y = "Índice",
