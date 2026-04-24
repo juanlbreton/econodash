@@ -24,6 +24,11 @@ jobs:
         with:
           r-version: '4.4.0'
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
       - name: Install R Dependencies
         uses: r-lib/actions/setup-renv@v2
         with:
