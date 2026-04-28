@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://juanlbreton.github.io/econodash/igae_dd.html</loc>
-    <lastmod>2026-04-24T19:06:46.170Z</lastmod>
-  </url>
-  <url>
-    <loc>https://juanlbreton.github.io/econodash/inpc_dd.html</loc>
-    <lastmod>2026-04-24T19:06:46.171Z</lastmod>
-  </url>
-  <url>
-    <loc>https://juanlbreton.github.io/econodash/inversion_dd.html</loc>
-    <lastmod>2026-04-24T19:06:46.171Z</lastmod>
-  </url>
-  <url>
-    <loc>https://juanlbreton.github.io/econodash/pib_dd.html</loc>
-    <lastmod>2026-04-24T19:06:46.171Z</lastmod>
+    <loc>https://juanlbreton.github.io/econodash/index.html</loc>
+    <lastmod>2026-04-28T15:01:03.279Z</lastmod>
   </url>
   <url>
     <loc>https://juanlbreton.github.io/econodash/about.html</loc>
-    <lastmod>2026-04-24T19:06:46.170Z</lastmod>
+    <lastmod>2026-04-28T15:01:03.278Z</lastmod>
   </url>
   <url>
-    <loc>https://juanlbreton.github.io/econodash/index.html</loc>
-    <lastmod>2026-04-24T19:06:46.171Z</lastmod>
+    <loc>https://juanlbreton.github.io/econodash/igae_dd.html</loc>
+    <lastmod>2026-04-28T15:01:03.278Z</lastmod>
+  </url>
+  <url>
+    <loc>https://juanlbreton.github.io/econodash/inversion_dd.html</loc>
+    <lastmod>2026-04-28T15:01:03.279Z</lastmod>
+  </url>
+  <url>
+    <loc>https://juanlbreton.github.io/econodash/inpc_dd.html</loc>
+    <lastmod>2026-04-28T15:01:03.279Z</lastmod>
+  </url>
+  <url>
+    <loc>https://juanlbreton.github.io/econodash/pib_dd.html</loc>
+    <lastmod>2026-04-28T15:01:03.279Z</lastmod>
   </url>
 </urlset>
