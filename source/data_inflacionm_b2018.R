@@ -41,7 +41,8 @@ inflac_01 <-
         str_detect(concepto, "Energéticos") ~ "NO SUBYACENTE: ENERGÉTICOS",
         str_detect(concepto, "No subyacente") ~ "NO SUBYACENTE",
         .default = "No identificado"),
-    concepto = str_to_title(concepto)
+    concepto = str_to_title(concepto),
+    fecha = dmy(fecha)
   ) |> 
   arrange(fecha)
 
