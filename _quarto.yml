@@ -15,7 +15,7 @@ format:
     theme: 
       cosmo
     lang: es
-    css: styles.css
+    css: styles.scss
     toc: true
     code-block-border-left: "darkorange"
     code-block-bg: true
